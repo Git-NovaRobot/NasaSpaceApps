@@ -133,7 +133,7 @@
         position: relative;
         display: inline-block;
         aspect-ratio: var(--book-ar);
-        width: min(95vw, calc(90vh * var(--book-ar)));
+        width: 95vw;
         max-width: 1800px;
         perspective: 3000px;
       }
@@ -312,6 +312,28 @@
       const fullscreenBtn = document.getElementById("fullscreenBtn");
       const warn = document.getElementById("warn");
 
+      const topbarEl = document.querySelector(".topbar");
+      const controlsBarEl = document.querySelector(".controls-bar");
+
+      function getAvailableHeight() {
+        const topH = topbarEl ? topbarEl.offsetHeight : 0;
+        const bottomH = controlsBarEl ? controlsBarEl.offsetHeight : 0;
+        // pequeño margen de seguridad
+        return Math.max(200, window.innerHeight - topH - bottomH - 8);
+      }
+
+      function sizeBook() {
+        const ar =
+          parseFloat(
+            getComputedStyle(document.documentElement).getPropertyValue(
+              "--book-ar"
+            )
+          ) || 2;
+        const availH = getAvailableHeight();
+        const width = Math.min(window.innerWidth * 0.95, availH * ar);
+        book.style.width = width + "px";
+      }
+
       const leaves = [];
       const totalPages = IMAGES.length; // soporta número impar (última queda en blanco)
       const totalLeaves = Math.ceil(totalPages / 2);
@@ -405,11 +427,7 @@
       function setBookAspect(w, h) {
         const ar = w > 0 && h > 0 ? (2 * w) / h : 2; // dos páginas lado a lado
         document.documentElement.style.setProperty("--book-ar", String(ar));
-        const width = Math.min(
-          window.innerWidth * 0.95,
-          window.innerHeight * 0.9 * ar
-        );
-        book.style.width = width + "px";
+        sizeBook();
       }
       function autodetectAspect() {
         let idx = 0;
@@ -433,21 +451,10 @@
         tryNext();
       }
 
-      window.addEventListener("resize", () => {
-        const ar =
-          parseFloat(
-            getComputedStyle(document.documentElement).getPropertyValue(
-              "--book-ar"
-            )
-          ) || 2;
-        const width = Math.min(
-          window.innerWidth * 0.95,
-          window.innerHeight * 0.9 * ar
-        );
-        book.style.width = width + "px";
-      });
+      window.addEventListener("resize", sizeBook);
 
       autodetectAspect();
+      sizeBook();
       updateUI();
     </script>
   </body>
