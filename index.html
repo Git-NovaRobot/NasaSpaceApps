@@ -46,7 +46,7 @@
         flex: 0 0 auto;
       }
       .logo {
-        width: 500px; /* logo grande y responsivo */
+        width: 300px; /* logo grande y responsivo */
         height: auto;
         padding-left: 100px;
         display: block;
@@ -61,7 +61,7 @@
         transform: translate(-50%, -50%);
         width: min(70vw, 10000px);
         text-align: center;
-        font-size: 50px;
+        font-size: 30px;
         font-weight: 900;
         letter-spacing: 0.3px;
         pointer-events: none; /* evita que tape el botón */
@@ -71,6 +71,7 @@
         border: none;
         background: var(--secondary);
         color: #fff;
+        padding-top: 20px;
         padding: 12px 18px;
         border-radius: 12px;
         cursor: pointer;
@@ -170,7 +171,7 @@
       /* Indicador */
       .page-indicator {
         position: absolute;
-        bottom: 68px;
+        bottom: 12px;
         right: 20px;
         background: rgba(2, 6, 23, 0.7);
         padding: 8px 12px;
@@ -196,16 +197,19 @@
       /* Logo dentro del libro (esquina sup. izq.) */
 
       /* Controles inferiores centrados (NAV) */
-      .controls-bottom {
-        position: absolute;
-        bottom: 12px;
-        left: 50%;
-        transform: translateX(-50%);
+      .controls-bar {
+        width: 100%;
         display: flex;
+        justify-content: center;
         gap: 22px;
-        z-index: 70;
+        padding: 14px 20px;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0.25)
+        );
       }
-      .controls-bottom .btn {
+      .controls-bar .btn {
         padding: 14px 22px;
         border-radius: 12px;
         font-size: 18px;
@@ -245,16 +249,20 @@
         <div class="page-indicator" id="pageIndicator">1-2 / 20</div>
         <div class="warn" id="warn"></div>
       </div>
+    </div>
 
-      <!-- NAV centrado abajo (más grande) -->
-      <div class="controls-bottom">
-        <button id="btnPrev" class="btn ghost" aria-label="Página anterior">
-          ⟵ Anterior
-        </button>
-        <button id="btnNext" class="btn next" aria-label="Página siguiente">
-          Siguiente ⟶
-        </button>
-      </div>
+    <!-- NAV centrado abajo (más grande, fuera del comic) -->
+    <div
+      class="controls-bar"
+      role="toolbar"
+      aria-label="Controles de navegación"
+    >
+      <button id="btnPrev" class="btn ghost" aria-label="Página anterior">
+        ⟵ Anterior
+      </button>
+      <button id="btnNext" class="btn next" aria-label="Página siguiente">
+        Siguiente ⟶
+      </button>
     </div>
 
     <script>
