@@ -183,6 +183,9 @@
         object-fit: contain;
         display: block;
       }
+      .side.blank {
+        background: #0e0e0e;
+      }
       .back {
         transform: rotateY(180deg);
       }
@@ -273,7 +276,7 @@
           <button id="zoneLeft" aria-label="Página anterior"></button>
           <button id="zoneRight" aria-label="Página siguiente"></button>
         </div>
-        <div class="page-indicator" id="pageIndicator">1-2 / 20</div>
+        <div class="page-indicator" id="pageIndicator">&nbsp;</div>
         <div class="warn" id="warn"></div>
       </div>
     </div>
@@ -346,27 +349,37 @@
 
         const front = document.createElement("div");
         front.className = "side front";
-        const fimg = document.createElement("img");
-        fimg.alt = `Página ${i * 2 + 1}`;
-        fimg.src = IMAGES[i * 2] || "";
-        fimg.onerror = () => {
-          front.style.background = "#111";
-          front.style.color = "#fca5a5";
-          front.textContent = `No se pudo cargar: ${IMAGES[i * 2]}`;
-        };
-        front.appendChild(fimg);
+        const frontSrc = IMAGES[i * 2];
+        if (frontSrc) {
+          const fimg = document.createElement("img");
+          fimg.alt = `Página ${i * 2 + 1}`;
+          fimg.src = frontSrc;
+          fimg.onerror = () => {
+            front.style.background = "#111";
+            front.style.color = "#fca5a5";
+            front.textContent = `No se pudo cargar: ${frontSrc}`;
+          };
+          front.appendChild(fimg);
+        } else {
+          front.classList.add("blank");
+        }
 
         const back = document.createElement("div");
         back.className = "side back";
-        const bimg = document.createElement("img");
-        bimg.alt = `Página ${i * 2 + 2}`;
-        bimg.src = IMAGES[i * 2 + 1] || "";
-        bimg.onerror = () => {
-          back.style.background = "#111";
-          back.style.color = "#fca5a5";
-          back.textContent = `No se pudo cargar: ${IMAGES[i * 2 + 1]}`;
-        };
-        back.appendChild(bimg);
+        const backSrc = IMAGES[i * 2 + 1];
+        if (backSrc) {
+          const bimg = document.createElement("img");
+          bimg.alt = `Página ${i * 2 + 2}`;
+          bimg.src = backSrc;
+          bimg.onerror = () => {
+            back.style.background = "#111";
+            back.style.color = "#fca5a5";
+            back.textContent = `No se pudo cargar: ${backSrc}`;
+          };
+          back.appendChild(bimg);
+        } else {
+          back.classList.add("blank");
+        }
 
         leaf.appendChild(front);
         leaf.appendChild(back);
@@ -377,7 +390,7 @@
       // ====== Estado & Navegación ======
       let flipped = 0;
       function updateUI() {
-        const left = Math.max(1, flipped * 2 + 1 - 1);
+        const left = Math.min(totalPages, flipped * 2 + 1);
         const right = Math.min(totalPages, left + 1);
         pageIndicator.textContent = `${left}-${right} / ${totalPages}`;
         btnPrev.disabled = flipped === 0;
