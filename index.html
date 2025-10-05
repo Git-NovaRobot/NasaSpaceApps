@@ -46,9 +46,8 @@
         flex: 0 0 auto;
       }
       .logo {
-        width: 300px; /* logo grande y responsivo */
+        width: clamp(140px, 24vw, 300px); /* logo grande y responsivo */
         height: auto;
-        padding-left: 100px;
         display: block;
         object-fit: contain;
         opacity: 0.95;
@@ -59,12 +58,40 @@
         top: 50%;
         transform-origin: center;
         transform: translate(-50%, -50%);
-        width: min(70vw, 10000px);
+        width: min(70vw, 800px);
         text-align: center;
         font-size: 30px;
         font-weight: 900;
         letter-spacing: 0.3px;
         pointer-events: none; /* evita que tape el botón */
+      }
+      @media (max-width: 900px) {
+        .topbar {
+          display: grid;
+          grid-template-columns: auto 1fr auto; /* logo | título flexible | botón */
+          align-items: center;
+          gap: 10px;
+        }
+        .topbar-title {
+          position: static; /* deja de ser absoluto */
+          left: auto;
+          top: auto;
+          transform: none;
+          width: auto;
+          min-width: 0; /* permite que pueda encogerse */
+          pointer-events: auto;
+          font-size: clamp(18px, 5vw, 28px);
+          white-space: nowrap; /* una sola línea */
+          overflow: hidden; /* recorte seguro */
+          text-overflow: ellipsis; /* agrega … si no cabe */
+        }
+        .logo {
+          width: clamp(120px, 22vw, 220px);
+        }
+        .topbar-right .btn {
+          font-size: 14px;
+          padding: 8px 12px;
+        }
       }
       .btn {
         appearance: none;
